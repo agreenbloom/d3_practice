@@ -7,7 +7,10 @@ $(document).on('ready', function(){
         .data(dataset)
         .enter()
         .append("p")
-        .text("New paragraph!");
+        .text(function(d) {
+          return "I can count up to" + d;
+        });
+
 
 
 
