@@ -14,7 +14,7 @@ $(document).on('ready', function(){
   .domain([0, d3.max(dataset)])
   .range([0, h]);
 
-  var svg = d3.select("body")
+  var svg = d3.select("#barchart")
   .append("svg")
   .attr("width", w)
   .attr("height", h);
@@ -58,9 +58,12 @@ $(document).on('ready', function(){
 
   d3.select("p")
   .on("click", function() {
-
-    dataset = [ 11, 12, 15, 20, 18, 17, 16, 18, 23, 25,
-    5, 10, 13, 19, 21, 25, 22, 18, 15, 13 ];
+    var numValues = dataset.length;
+    dataset = [];
+    for (var i = 0; i < numValues; i++) {
+      var newNumber = Math.floor(Math.random() * 25);
+      dataset.push(newNumber);
+    }
 
     svg.selectAll("rect")
     .data(dataset)
