@@ -1,13 +1,10 @@
 $(document).on('ready', function(){
 
-
-
-  //Width and height
   var w = 600;
   var h = 250;
 
-  var dataset = [ { key: 0, value: 5 },   //dataset is now an array of objects.
-        { key: 1, value: 10 },    //Each object has a 'key' and a 'value'.
+  var dataset = [ { key: 0, value: 5 },
+        { key: 1, value: 10 },
         { key: 2, value: 13 },
         { key: 3, value: 19 },
         { key: 4, value: 21 },
@@ -35,18 +32,15 @@ $(document).on('ready', function(){
         .domain([0, d3.max(dataset, function(d) { return d.value; })])
         .range([0, h]);
 
-  //Define key function, to be used when binding data
   var key = function(d) {
   return d.key;
   };
 
-  //Create SVG element
-  var svg = d3.select("body")
+  var svg = d3.select("#barchart")
       .append("svg")
       .attr("width", w)
       .attr("height", h);
 
-  //Create bars
   svg.selectAll("rect")
    .data(dataset, key)
    .enter()
@@ -65,7 +59,6 @@ $(document).on('ready', function(){
     return "rgb(0, 0, " + (d.value * 10) + ")";
    });
 
-  //Create labels
   svg.selectAll("text")
    .data(dataset, key)
    .enter()
@@ -85,16 +78,11 @@ $(document).on('ready', function(){
    .attr("fill", "white");
 
 
-
-
-  //On click, update with new data
   d3.selectAll("p")
   .on("click", function() {
 
-    //See which p was clicked
     var paragraphID = d3.select(this).attr("id");
 
-    //Decide what to do next
     if (paragraphID == "add") {
       //Add a data value
       var maxValue = 25;
@@ -106,19 +94,15 @@ $(document).on('ready', function(){
         value: newNumber
       });
     } else {
-      //Remove a value
-      dataset.shift();  //Remove one value from dataset
+      dataset.shift();
     }
 
-    //Update scale domains
     xScale.domain(d3.range(dataset.length));
     yScale.domain([0, d3.max(dataset, function(d) { return d.value; })]);
 
-    //Select…
     var bars = svg.selectAll("rect")
       .data(dataset, key);
 
-    //Enter…
     bars.enter()
       .append("rect")
       .attr("x", w)
@@ -133,7 +117,6 @@ $(document).on('ready', function(){
         return "rgb(0, 0, " + (d.value * 10) + ")";
       });
 
-    //Update…
     bars.transition()
       .duration(500)
       .attr("x", function(d, i) {
@@ -147,7 +130,6 @@ $(document).on('ready', function(){
         return yScale(d.value);
       });
 
-    //Exit…
     bars.exit()
       .transition()
       .duration(500)
@@ -155,14 +137,9 @@ $(document).on('ready', function(){
       .remove();
 
 
-
-    //Update all labels
-
-    //Select…
     var labels = svg.selectAll("text")
       .data(dataset, key);
 
-    //Enter…
     labels.enter()
       .append("text")
       .text(function(d) {
@@ -177,14 +154,12 @@ $(document).on('ready', function(){
        .attr("font-size", "11px")
        .attr("fill", "white");
 
-    //Update…
     labels.transition()
       .duration(500)
       .attr("x", function(d, i) {
         return xScale(i) + xScale.rangeBand() / 2;
       });
 
-    //Exit…
     labels.exit()
       .transition()
       .duration(500)
