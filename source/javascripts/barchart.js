@@ -1,103 +1,199 @@
 $(document).on('ready', function(){
 
+
+
+  //Width and height
   var w = 600;
   var h = 250;
 
-  var dataset = [ 5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
-  11, 12, 15, 20, 18, 17, 16, 18, 23, 25 ];
+  var dataset = [ { key: 0, value: 5 },   //dataset is now an array of objects.
+        { key: 1, value: 10 },    //Each object has a 'key' and a 'value'.
+        { key: 2, value: 13 },
+        { key: 3, value: 19 },
+        { key: 4, value: 21 },
+        { key: 5, value: 25 },
+        { key: 6, value: 22 },
+        { key: 7, value: 18 },
+        { key: 8, value: 15 },
+        { key: 9, value: 13 },
+        { key: 10, value: 11 },
+        { key: 11, value: 12 },
+        { key: 12, value: 15 },
+        { key: 13, value: 20 },
+        { key: 14, value: 18 },
+        { key: 15, value: 17 },
+        { key: 16, value: 16 },
+        { key: 17, value: 18 },
+        { key: 18, value: 23 },
+        { key: 19, value: 25 } ];
 
   var xScale = d3.scale.ordinal()
-  .domain(d3.range(dataset.length))
-  .rangeRoundBands([0, w], 0.05);
+        .domain(d3.range(dataset.length))
+        .rangeRoundBands([0, w], 0.05);
 
   var yScale = d3.scale.linear()
-  .domain([0, d3.max(dataset)])
-  .range([0, h]);
+        .domain([0, d3.max(dataset, function(d) { return d.value; })])
+        .range([0, h]);
 
-  var svg = d3.select("#barchart")
-  .append("svg")
-  .attr("width", w)
-  .attr("height", h);
+  //Define key function, to be used when binding data
+  var key = function(d) {
+  return d.key;
+  };
 
+  //Create SVG element
+  var svg = d3.select("body")
+      .append("svg")
+      .attr("width", w)
+      .attr("height", h);
+
+  //Create bars
   svg.selectAll("rect")
-  .data(dataset)
-  .enter()
-  .append("rect")
-  .attr("x", function(d, i) {
-    return xScale(i);
-  })
-  .attr("y", function(d) {
-    return h - yScale(d);
-  })
-  .attr("width", xScale.rangeBand())
-  .attr("height", function(d) {
-    return yScale(d);
-  })
-  .attr("fill", function(d) {
-    return "rgb(0, 0, " + (d * 10) + ")";
-  });
+   .data(dataset, key)
+   .enter()
+   .append("rect")
+   .attr("x", function(d, i) {
+      return xScale(i);
+   })
+   .attr("y", function(d) {
+      return h - yScale(d.value);
+   })
+   .attr("width", xScale.rangeBand())
+   .attr("height", function(d) {
+      return yScale(d.value);
+   })
+   .attr("fill", function(d) {
+    return "rgb(0, 0, " + (d.value * 10) + ")";
+   });
 
+  //Create labels
   svg.selectAll("text")
-  .data(dataset)
-  .enter()
-  .append("text")
-  .text(function(d) {
-    return d;
-  })
-  .attr("text-anchor", "middle")
-  .attr("x", function(d, i) {
-    return xScale(i) + xScale.rangeBand() / 2;
-  })
-  .attr("y", function(d) {
-    return h - yScale(d) + 14;
-  })
-  .attr("font-family", "sans-serif")
-  .attr("font-size", "11px")
-  .attr("fill", "white");
+   .data(dataset, key)
+   .enter()
+   .append("text")
+   .text(function(d) {
+      return d.value;
+   })
+   .attr("text-anchor", "middle")
+   .attr("x", function(d, i) {
+      return xScale(i) + xScale.rangeBand() / 2;
+   })
+   .attr("y", function(d) {
+      return h - yScale(d.value) + 14;
+   })
+   .attr("font-family", "sans-serif")
+   .attr("font-size", "11px")
+   .attr("fill", "white");
 
 
-  d3.select("p")
+
+
+  //On click, update with new data
+  d3.selectAll("p")
   .on("click", function() {
-    var numValues = dataset.length;
-    dataset = [];
-    for (var i = 0; i < numValues; i++) {
-      var newNumber = Math.floor(Math.random() * 25);
-      dataset.push(newNumber);
+
+    //See which p was clicked
+    var paragraphID = d3.select(this).attr("id");
+
+    //Decide what to do next
+    if (paragraphID == "add") {
+      //Add a data value
+      var maxValue = 25;
+      var newNumber = Math.floor(Math.random() * maxValue);
+      var lastKeyValue = dataset[dataset.length - 1].key;
+      console.log(lastKeyValue);
+      dataset.push({
+        key: lastKeyValue + 1,
+        value: newNumber
+      });
+    } else {
+      //Remove a value
+      dataset.shift();  //Remove one value from dataset
     }
 
-    svg.selectAll("rect")
-    .data(dataset)
-    .transition()
-    .delay(function(d, i) {
-      return i / dataset.length * 1000;
-    })
-    .duration(500)
-    .ease("linear")
-    .attr("y", function(d) {
-      return h - yScale(d);
-    })
-    .attr("height", function(d) {
-      return yScale(d);
-    })
-    .attr("fill", function(d) {
-      return "rgb(0, 0, " + (d * 10) + ")";
-    });
+    //Update scale domains
+    xScale.domain(d3.range(dataset.length));
+    yScale.domain([0, d3.max(dataset, function(d) { return d.value; })]);
 
-    svg.selectAll("text")
-    .data(dataset)
-    .text(function(d) {
-      return d;
-    })
-    .attr("x", function(d, i) {
-      return xScale(i) + xScale.rangeBand() / 2;
-    })
-    .attr("y", function(d) {
-      return h - yScale(d) + 14;
-    });
+    //Select…
+    var bars = svg.selectAll("rect")
+      .data(dataset, key);
+
+    //Enter…
+    bars.enter()
+      .append("rect")
+      .attr("x", w)
+      .attr("y", function(d) {
+        return h - yScale(d.value);
+      })
+      .attr("width", xScale.rangeBand())
+      .attr("height", function(d) {
+        return yScale(d.value);
+      })
+      .attr("fill", function(d) {
+        return "rgb(0, 0, " + (d.value * 10) + ")";
+      });
+
+    //Update…
+    bars.transition()
+      .duration(500)
+      .attr("x", function(d, i) {
+        return xScale(i);
+      })
+      .attr("y", function(d) {
+        return h - yScale(d.value);
+      })
+      .attr("width", xScale.rangeBand())
+      .attr("height", function(d) {
+        return yScale(d.value);
+      });
+
+    //Exit…
+    bars.exit()
+      .transition()
+      .duration(500)
+      .attr("x", -xScale.rangeBand())
+      .remove();
+
+
+
+    //Update all labels
+
+    //Select…
+    var labels = svg.selectAll("text")
+      .data(dataset, key);
+
+    //Enter…
+    labels.enter()
+      .append("text")
+      .text(function(d) {
+        return d.value;
+      })
+      .attr("text-anchor", "middle")
+      .attr("x", w)
+      .attr("y", function(d) {
+        return h - yScale(d.value) + 14;
+      })
+       .attr("font-family", "sans-serif")
+       .attr("font-size", "11px")
+       .attr("fill", "white");
+
+    //Update…
+    labels.transition()
+      .duration(500)
+      .attr("x", function(d, i) {
+        return xScale(i) + xScale.rangeBand() / 2;
+      });
+
+    //Exit…
+    labels.exit()
+      .transition()
+      .duration(500)
+      .attr("x", -xScale.rangeBand())
+      .remove();
 
   });
 
 
 
+});
 
-})

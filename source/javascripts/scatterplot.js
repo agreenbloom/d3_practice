@@ -34,7 +34,7 @@ $(document).on('ready', function(){
     .orient("left")
     .ticks(5);
 
-  var svg = d3.select("body")
+  var svg = d3.select("#svg1")
     .append("svg")
     .attr("width", w)
     .attr("height", h);
