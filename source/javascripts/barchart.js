@@ -57,6 +57,9 @@ $(document).on('ready', function(){
    })
    .attr("fill", function(d) {
     return "rgb(0, 0, " + (d.value * 10) + ")";
+   })
+   .on("click", function() {
+     sortBars();
    });
 
   svg.selectAll("text")
@@ -77,6 +80,29 @@ $(document).on('ready', function(){
    .attr("font-size", "11px")
    .attr("fill", "white");
 
+  var sortOrder = false;
+
+  var sortBars = function() {
+    sortOrder = !sortOrder;
+
+    svg.selectAll("rect")
+      .sort(function(a, b) {
+        if (sortOrder) {
+          return d3.ascending(a, b);
+        } else {
+          return d3.descending(a, b);
+        }
+      })
+      .transition()
+      .delay(function(d, i) {
+        return i * 50;
+      })
+      .duration(1000)
+      .attr("x", function(d, i) {
+        return xScale(i);
+      });
+  }
+
 
   d3.selectAll("p")
   .on("click", function() {
@@ -84,7 +110,6 @@ $(document).on('ready', function(){
     var paragraphID = d3.select(this).attr("id");
 
     if (paragraphID == "add") {
-      //Add a data value
       var maxValue = 25;
       var newNumber = Math.floor(Math.random() * maxValue);
       var lastKeyValue = dataset[dataset.length - 1].key;
