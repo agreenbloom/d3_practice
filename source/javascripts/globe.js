@@ -27,16 +27,8 @@ $(document).on('ready', function(){
   var realFeatureSize = d3.extent(featureData, function(d) {return d3.geo.area(d)});
 
   var newFeatureColor = d3.scale.quantize()
-    .domain(realFeatureSize).range(colorbrewer.Reds[7]);
+    .domain(features).range(colorbrewer.Reds[7]);
 
-  // d3.select("svg").selectAll("path").data(data)
-  //   .enter()
-  //   .append("path")
-  //   .attr("d", geoPath)
-  //   .attr("class", "countries")
-  //   .style("fill", function(d) {
-  //     return newFeatureColor(geoPath.area(d))
-  //   });
 
   d3.json("world.geojson",function(error,geodata) {
     if (error) return console.log(error); //unknown error, check the console
@@ -47,8 +39,27 @@ $(document).on('ready', function(){
       .append("path")
       .attr("d",path)
       .attr("class", "countries")
-      .on("click",clicked);
-
+      .on("click",clicked)
+      .style("fill", function(d) {
+      return newFeatureColor(geoPath.area(d));
+    })
   });
+
+  d3.select("svg").append("path")
+    .datum(graticule)
+    .attr("class", "graticule line")
+    .attr("d", path)
+    .style("fill", "none")
+    .style("stroke", "grey")
+    .style("stroke-width", "1px");
+
+    d3.select("svg").append("path")
+      .datum(graticule.outline)
+      .attr("class", "graticule outline")
+      .attr("d", path)
+      .style("fill", "none")
+      .style("stroke", "black")
+      .style("stroke-width", "1px");
+
 
 });
