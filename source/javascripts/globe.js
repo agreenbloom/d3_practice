@@ -3,35 +3,29 @@ $(document).on('ready', function(){
   var width = 960;
   var height = 960;
 
-var radius = height / 2-5,
-  scale = radius,
-  velocity = .02;
-
   var projection  = d3.geo.orthographic()
-    .scale(scale)
+    .scale(475)
     .translate([width / 2, height / 2])
     .clipAngle(90)
     .precision(.1);
 
-  var canvas = d3.select("body").append("canvas")
-    .attr("width", width)
-    .attr("height", height);
-
-  var context = canvas.node().getContext("2d");
-
   var path = d3.geo.path()
-    .projection(projection)
-    .context(context);
+    .projection(projection);
 
   var graticule = d3.geo.graticule();
 
 
+  var λ = d3.scale.linear()
+    .domain([0, width])
+    .range([-180, 180]);
+
+  var φ = d3.scale.linear()
+    .domain([0, height])
+    .range([90, -90]);
+
   var svg = d3.select("body").append("svg")
-    .attr("width", height)
-    .attr("height", width);
-
- var globe = {type: "Sphere"};
-
+    .attr("width", width)
+    .attr("height", height);
 
   var features = svg.append("g")
     .attr("class","features");
@@ -43,7 +37,12 @@ var radius = height / 2-5,
   var newFeatureColor = d3.scale.quantize()
     .domain(features).range(colorbrewer.Reds[7]);
 
-
+  svg.on("mousemove", function() {
+    var p = d3.mouse(this);
+    projection.rotate([λ(p[0]), φ(p[1])]);
+    svg.selectAll("path").attr("d", path);
+  })
+;
   d3.json("world.geojson",function(error,geodata) {
     if (error) return console.log(error); //unknown error, check the console
 
@@ -53,28 +52,15 @@ var radius = height / 2-5,
       .append("path")
       .attr("d",path)
       .attr("class", "countries")
-      // .on("click",clicked)
       .style("fill", function(d) {
-      return newFeatureColor(path.area(d));
+      return newFeatureColor(geoPath.area(d));
     })
 
-    d3.timer(function(elapsed) {
-      context.clearRect(0, 0, width, height);
-
-      projection.rotate([velocity * elapsed, 0]);
-      context.beginPath();
-      path(geodata);
-      context.fill();
-
-      context.beginPath();
-      context.arc(width / 2, height / 2, radius, 0, 2 * Math.PI, true);
-      context.lineWidth = 2.5;
-      context.stroke();
-      });
-
+    svg.append("path")
+      .datum(topojson.feature(geodata, geodata.objects.land ))
+      .attr("class", "land")
+      .attr("d", path);
   });
-
-  d3.select(self.frameElement).style("height", height + "px");
 
   d3.select("svg").append("path")
     .datum(graticule)
@@ -84,17 +70,13 @@ var radius = height / 2-5,
     .style("stroke", "grey")
     .style("stroke-width", "1px");
 
-
-  d3.select("svg").append("path")
-    .datum(graticule.outline)
-    .attr("class", "graticule outline")
-    .attr("d", path)
-    .style("fill", "none")
-    .style("stroke", "black")
-    .style("stroke-width", "1px");
-
-
-
+    d3.select("svg").append("path")
+      .datum(graticule.outline)
+      .attr("class", "graticule outline")
+      .attr("d", path)
+      .style("fill", "none")
+      .style("stroke", "black")
+      .style("stroke-width", "1px");
 
 
 });
