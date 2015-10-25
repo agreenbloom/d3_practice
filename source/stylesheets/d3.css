@@ -26,13 +26,13 @@
 
 
 path {
-  stroke: white;
+  stroke: red;
   stroke-width: 0.25px;
   fill: black;
 }
 
 path:hover, path.highlighted {
-  fill: red;
+  fill: blue;
 }
 
 
