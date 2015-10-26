@@ -1,10 +1,10 @@
 $(document).on('ready', function(){
 
   var width = 500,
-      height = 500;
+      height = 550;
 
   var projection = d3.geo.conicEqualArea()
-      .scale(height * 100)
+      .scale(54045)
       .center([ -79.20831973072589, 43.739257904235977 ])
       // .parallels([41.9714969544088,83.1480859363606])
       // .rotate([96.64103465647952])
