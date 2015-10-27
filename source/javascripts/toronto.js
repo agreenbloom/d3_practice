@@ -1,11 +1,11 @@
 $(document).on('ready', function(){
 
-  var width = 500,
-      height = 550;
+  var width = 940,
+      height = 860;
 
   var projection = d3.geo.conicEqualArea()
-      .scale(54045)
-      .center([ -79.20831973072589, 43.739257904235977 ])
+      .scale(145500)
+      .center([-79.45318304409768,43.74080098090873])
       // .parallels([41.9714969544088,83.1480859363606])
       // .rotate([96.64103465647952])
       .translate([height / 2, width / 2]);
