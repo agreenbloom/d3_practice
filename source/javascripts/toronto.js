@@ -3,7 +3,6 @@ $(document).on('ready', function(){
   var width = 1230,
       height = 1160;
 
-  var rateById = d3.map();
 
   var quantize = d3.scale.quantize()
     .domain([0, .15])
@@ -26,28 +25,58 @@ $(document).on('ready', function(){
       .attr("class","features");
 
 
-
   queue()
     .defer(d3.json, "toronto.geojson")
     .defer(d3.csv, "uber.csv")
     .await(ready);
 
+  var ward = [];
 
-  function ready(error, geodata, uber) {
+ var tooltip = d3.select('body').append('div')
+   .attr('class', 'tooltip');
+
+
+  function ready(error, json, data) {
     if (error) return console.log(error);
+    // console.log(geodata.features[1,40].properties.id);
+     // data.forEach(function(d){
+     //   console.log(d.id)
+     //   console.log(d.vote)
+
+       for (var i = 0; i < data.length; i ++){
+
+            //get the ward name
+            var wardName = data[i].HOOD;
+
+            //get the number of vote for ward
+            var voteUber = data[i].vote;
+
+            for(var j = 0; j < json.features.length; j++){
+
+              if (json.features[j].properties.HOOD == wardName){
+
+                json.features[j].properties.id == voteUber;
+                //stop
+                break;
+              }
+
+            }
+             var wards = svg.selectAll("path")
+                .data(json.features)
+                .enter()
+                .append("path")
+                // .on("mouseover", function(){d3.select(this).style("fill", "aliceblue");})
+                // .on("mouseout", function(){d3.select(this).style("fill", "white");})
+                .attr("class", "wards")
+                .attr("id", function(j) {return j.properties.id })
+                .attr("d",path);
+
+            console.log(wardName + voteUber)
+     };
 
 
-      uber.forEach(function(d) {
-        console.log(d.rate);
-        console.log(d.HOOD);
-        console.log(d.id);
-      });
 
-    svg.selectAll("path")
-      .data(geodata.features)
-      .enter()
-      .append("path")
-      .attr("d",path);
-  };
-
+  }
 });
+
+
