@@ -1,9 +1,31 @@
 "label","population","country","x","y"
-"San Francisco", 750000,"USA",37,-122
-"Fresno", 500000,"USA",36,-119
-"Lahore",12500000,"Pakistan",31,74
-"Karachi",13000000,"Pakistan",24,67
-"Rome",2500000,"Italy",41,12
-"Naples",1000000,"Italy",40,14
-"Rio",12300000,"Brazil",-22,-43
-"Sao Paolo",12300000,"Brazil",-23,-46
+"Maharashta",12300000,"India",31,74
+"Karnataka",12300000,"India",24,67
+"Telengu",12300000,"India",41,12
+"Bulgaria",12300000,"Bulgaria",41,12
+"Thailand",12300000,"Thailand",13.75,100.48
+"Fukuoka",12300000,"Japan",35.68,139.76
+"South Korea",523000,"South Korea",37.5663889,126.9997222
+"Italy",523000,"Italy",41,12
+"Spain",523000,"Spain",41.3833333,2.1833333
+"France",523000,"France",42.152492,9.560016
+"Portland, Oregon",523000,"USA",-23,-46
+"Ankorage",523000,"USA",-23,-46
+"Alburn",523000,"USA",-23,-46
+"Tuscaloosa",523000,"USA",-23,-46
+"San Antonio",523000,"USA",-23,-46
+"Panama City Beach",523000,"USA",-23,-46
+"Netherlands",123000,"Netherlands",52.35,4.9166667
+"Germany",123000,"Germany",48.15,11.5833333
+"Brussels",123000,"Belgium",50.833,4.33
+"Western Australia",123000,"Australia",-31.9333333,115.8333333
+"Victoria",123000,"Australia",-37.8166667,144.9666667
+"hyderabad",60000,"India",17.3752778,78.4744444
+"New Delhi",60000,"India",-28.6,77.2
+"Mumbai",60000,"India",18.975,72.8258333
+"Taiwan",60000,"Taiwan",23.2102778,120.1841667
+"Queensland",60000,"Australia",-27.5,153.0166667
+"Cape Town ",60000,"South Africa",-33.9166667,18.4166667
+"Edmonton ",60000,"Canada",53.55,-113.5
+"Calgary ",60000,"Canada",51,-114
+"Toronto ",60000,"Canada",43,-79
