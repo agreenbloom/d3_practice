@@ -32,51 +32,62 @@ $(document).on('ready', function(){
 
   var ward = [];
 
- var tooltip = d3.select('body').append('div')
+  var tooltip = d3.select('body').append('div')
    .attr('class', 'tooltip');
 
 
-  function ready(error, json, data) {
+  function ready(error, json, csvData) {
     if (error) return console.log(error);
     // console.log(geodata.features[1,40].properties.id);
      // data.forEach(function(d){
      //   console.log(d.id)
      //   console.log(d.vote)
+    var keyArray = [];
 
-       for (var i = 0; i < data.length; i ++){
+
+
+       for (var i = 0; i < csvData.length; i ++){
 
             //get the ward name
-            var wardName = data[i].HOOD;
-
+            var wardName = csvData[i].HOOD;
             //get the number of vote for ward
-            var voteUber = data[i].vote;
+            var voteUber = csvData[i].vote;
 
             for(var j = 0; j < json.features.length; j++){
 
-              if (json.features[j].properties.HOOD == wardName){
+                var jsonWard = json.features[j].properties.HOOD
 
-                json.features[j].properties.id == voteUber;
+                if (wardName == jsonWard ) {
+
+                  json.features[j].properties.value = voteUber;
+                  break;
+
+                }
+
                 //stop
-                break;
               }
-
             }
-             var wards = svg.selectAll("path")
-                .data(json.features)
-                .enter()
-                .append("path")
-                // .on("mouseover", function(){d3.select(this).style("fill", "aliceblue");})
-                // .on("mouseout", function(){d3.select(this).style("fill", "white");})
-                .attr("class", "wards")
-                .attr("id", function(j) {return j.properties.id })
-                .attr("d",path);
 
-            console.log(wardName + voteUber)
+
+     svg.selectAll("path")
+        .data(json.features)
+        .enter()
+        .append("path")
+        .attr("d", path)
+        .style("fill", function(d) {
+          var value = d.properties.value;
+
+          if (value == "yes") {
+            return "blue"
+          } else {
+            return "yellow"
+          }
+        })
+
      };
 
 
 
-  }
 });
 
 
