@@ -3,89 +3,65 @@ $(document).on('ready', function(){
   var width = 1230,
       height = 1160;
 
-
-  var quantize = d3.scale.quantize()
-    .domain([0, .15])
-    .range(d3.range(9).map(function(i) { return "q" + i + "-9"; }));
-
   var projection = d3.geo.mercator()
-      .scale(135500)
+      .scale(120555)
       .center([-79.45318304409768,43.74080098090873])
       .translate([height / 2, width / 2]);
 
   var path = d3.geo.path()
-      .projection(projection);
-
-  var svg = d3.select("body").append("svg")
-      .attr("width", width)
-      .attr("height", height);
+    .projection(projection);
 
 
-  var features = svg.append("g")
-      .attr("class","features");
+  var color = d3.scale.quantize()
+      .range(["rgb(237,248,233)","rgb(186,228,179)","rgb(116,196,118)"]);
 
 
-  queue()
-    .defer(d3.json, "toronto.geojson")
-    .defer(d3.csv, "uber.csv")
-    .await(ready);
+  var svg = d3.select("#toronto")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height);
+      d3.csv("uber.csv", function(data) {
+        color.domain([
+          d3.min(data, function(d) { return d.value; }),
+          d3.max(data, function(d) { return d.value; })
+        ]);
 
-  var ward = [];
+        d3.json("toronto.geojson", function(json) {
+          for (var i = 0; i < data.length; i++) {
+            var dataID = data[i].id;
+            var uberVote = data[i].vote;
+            var dataValue = parseFloat(data[i].value);
 
-  var tooltip = d3.select('body').append('div')
-   .attr('class', 'tooltip');
+            for (var j = 0; j < json.features.length; j++) {
 
+              var jsonID = json.features[j].properties.id;
 
-  function ready(error, json, csvData) {
-    if (error) return console.log(error);
-    // console.log(geodata.features[1,40].properties.id);
-     // data.forEach(function(d){
-     //   console.log(d.id)
-     //   console.log(d.vote)
-    var keyArray = [];
+              if (dataID == jsonID) {
 
+                json.features[j].properties.value = dataValue;
+                break;
 
-
-       for (var i = 0; i < csvData.length; i ++){
-
-            //get the ward name
-            var wardName = csvData[i].HOOD;
-            //get the number of vote for ward
-            var voteUber = csvData[i].vote;
-
-            for(var j = 0; j < json.features.length; j++){
-
-                var jsonWard = json.features[j].properties.HOOD
-
-                if (wardName == jsonWard ) {
-
-                  json.features[j].properties.value = voteUber;
-                  break;
-
-                }
-
-                //stop
               }
+
             }
-
-
-     svg.selectAll("path")
-        .data(json.features)
-        .enter()
-        .append("path")
-        .attr("d", path)
-        .style("fill", function(d) {
-          var value = d.properties.value;
-
-          if (value == "yes") {
-            return "blue"
-          } else {
-            return "yellow"
           }
-        })
+          svg.selectAll("path")
+             .data(json.features)
+             .enter()
+             .append("path")
+             .attr("d", path)
+             .style("fill", function(d) {
+                var value = d.properties.value;
 
-     };
+                if (value) {
+                  return color(value);
+                } else {
+                  return "#ccc";
+                }
+             });
+        });
 
+      });
 
 
 });
