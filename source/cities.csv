@@ -1,31 +1,26 @@
 "label","population","country","x","y"
-"Maharashta",12300000,"India",31,74
-"Karnataka",12300000,"India",24,67
-"Telengu",12300000,"India",41,12
-"Bulgaria",12300000,"Bulgaria",41,12
-"Thailand",12300000,"Thailand",13.75,100.48
-"Fukuoka",12300000,"Japan",35.68,139.76
-"South Korea",523000,"South Korea",37.5663889,126.9997222
-"Italy",523000,"Italy",41,12
-"Spain",523000,"Spain",41.3833333,2.1833333
-"France",523000,"France",42.152492,9.560016
-"Portland, Oregon",523000,"USA",-23,-46
-"Ankorage",523000,"USA",-23,-46
-"Alburn",523000,"USA",-23,-46
-"Tuscaloosa",523000,"USA",-23,-46
-"San Antonio",523000,"USA",-23,-46
-"Panama City Beach",523000,"USA",-23,-46
-"Netherlands",123000,"Netherlands",52.35,4.9166667
-"Germany",123000,"Germany",48.15,11.5833333
-"Brussels",123000,"Belgium",50.833,4.33
-"Western Australia",123000,"Australia",-31.9333333,115.8333333
-"Victoria",123000,"Australia",-37.8166667,144.9666667
-"hyderabad",60000,"India",17.3752778,78.4744444
-"New Delhi",60000,"India",-28.6,77.2
-"Mumbai",60000,"India",18.975,72.8258333
-"Taiwan",60000,"Taiwan",23.2102778,120.1841667
-"Queensland",60000,"Australia",-27.5,153.0166667
-"Cape Town ",60000,"South Africa",-33.9166667,18.4166667
-"Edmonton ",60000,"Canada",53.55,-113.5
-"Calgary ",60000,"Canada",51,-114
-"Toronto ",60000,"Canada",43,-79
+"Maharashta",1230000,"India",31,74
+"Karnataka",1230000,"India",24,67
+"Telengu",1230000,"India",41,12
+"Bulgaria",1230000,"Bulgaria",41,12
+"Thailand",1230000,"Thailand",13.75,100.48
+"Fukuoka",1230000,"Japan",35.68,139.76
+"South Korea",999999,"South Korea",37.5663889,126.9997222
+"Italy",999999,"Italy",41,12
+"Spain",999999,"Spain",41.3833333,2.1833333
+"France",999999,"France",42.152492,9.560016
+"Portland, Oregon",999999,"USA",37 ,-122
+"Netherlands",888888,"Netherlands",52.35,4.9166667
+"Germany",888888,"Germany",48.15,11.5833333
+"Brussels",888888,"Belgium",50.833,4.33
+"Western Australia",888888,"Australia",-31.9333333,115.8333333
+"Victoria",888888,"Australia",-37.8166667,144.9666667
+"hyderabad",777777,"India",17.3752778,78.4744444
+"New Delhi",777777,"India",-28.6,77.2
+"Mumbai",777777,"India",18.975,72.8258333
+"Taiwan",777777,"Taiwan",23.2102778,120.1841667
+"Queensland",777777,"Australia",-27.5,153.0166667
+"Cape Town ",777777,"South Africa",-33.9166667,18.4166667
+"Edmonton ",777777,"Canada",53.55,-113.5
+"Calgary ",777777,"Canada",51,-114
+"Toronto ",777777,"Canada",43,-79
